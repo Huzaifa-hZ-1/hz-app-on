@@ -1,7 +1,33 @@
 <resources>
     <string name="app_name">Hz App On</string>
-    <string name="greeting">Hello, World!</string>
-    <string name="tap_me">Tap me</string>
-    <string name="tap_count_zero">Taps: 0</string>
-    <string name="tap_count">Taps: %d</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_title">What are you into?</string>
+    <string name="onboarding_subtitle">Pick your categories to get started</string>
+    <string name="onboarding_continue">Continue</string>
+    <string name="onboarding_select_hint">Select at least 1 category</string>
+
+    <!-- Home -->
+    <string name="home_title">Quiz</string>
+    <string name="home_offline_banner">You\'re offline — 5 questions available</string>
+    <string name="home_hearts_label">Hearts: %d / %d</string>
+    <string name="home_tap_to_play">Tap a category to play</string>
+
+    <!-- Quiz -->
+    <string name="quiz_question_counter">%d / %d</string>
+    <string name="quiz_hearts">♥ %d</string>
+    <string name="quiz_time_up">Time\'s up!</string>
+
+    <!-- Session End -->
+    <string name="session_end_score">%d / %d</string>
+    <string name="session_end_correct">Correct: %d</string>
+    <string name="session_end_wrong">Wrong: %d</string>
+    <string name="session_end_game_over">You ran out of hearts</string>
+    <string name="session_end_watch_ad">Watch ad to restore 1 heart ♥</string>
+    <string name="session_end_play_again">Play Again</string>
+    <string name="session_end_go_home">Go Home</string>
+    <string name="session_end_great_job">Great job!</string>
+
+    <!-- Errors -->
+    <string name="error_load_questions">Could not load questions. Please try again.</string>
 </resources>

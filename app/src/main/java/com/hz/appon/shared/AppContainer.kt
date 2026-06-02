@@ -1,6 +1,7 @@
 package com.hz.appon.shared
 
 import android.content.Context
+import com.hz.appon.ads.AdManager
 import com.hz.appon.data.local.QuizDatabase
 import com.hz.appon.data.remote.OpenTdbApi
 import com.hz.appon.data.repository.QuestionRepository
@@ -35,4 +36,6 @@ class AppContainer(context: Context) {
 
     /** Exposes LivesModule so SessionEndViewModel can call addHeart() after a rewarded ad. */
     val livesModule_ = livesModule
+
+    val adManager = AdManager(context)
 }
