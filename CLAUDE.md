@@ -81,11 +81,46 @@ Claude will explicitly flag with **[CAUTION: over-engineering]** before introduc
 - Abstract base classes or interfaces with only one implementation
 - Multi-module splitting before the single module exceeds ~15 files per feature
 
-## Key Conventions
+## Coding Standards
 
+### KDocs
+Write KDocs on every `public` and `internal` class, interface, and function. Skip `private` and `override` — they're implementation detail.
+Format:
+```kotlin
+/**
+ * Brief one-line summary.
+ *
+ * Longer explanation only if the behaviour is non-obvious.
+ *
+ * @param categoryId OpenTDB category ID (9–32)
+ * @return Empty list if no questions cached and offline
+ */
+```
+Do NOT write KDocs that just restate the function name ("Returns the list of questions").
+
+### Logging
+Use **Timber** throughout — never `android.util.Log` directly.
+- `Timber.d(...)` — debug info, flow tracing
+- `Timber.w(...)` — unexpected but recoverable (e.g. empty API response)
+- `Timber.e(throwable, ...)` — errors and exceptions
+- Log at feature boundaries: repository calls, network responses, navigation events, gamification state changes
+- Never log PII or user answers
+- Timber is initialised in `App.onCreate()` with `DebugTree` in debug builds only — release builds produce no logs
+
+### SOLID in practice
+- **S** — one class, one reason to change. `LivesModule` only knows about hearts. `AdManager` only knows about ads.
+- **O** — add `XpModule` without touching `LivesModule` or `GamificationEngine`
+- **L** — `QuestionRepositoryImpl` substitutable for `QuestionRepository` everywhere
+- **I** — `GamificationModule` has only the methods each module actually needs
+- **D** — ViewModels depend on `QuestionRepository` interface, not `QuestionRepositoryImpl`
+
+### General
 - ViewBinding is enabled — always use `binding.*` to access views, not `findViewById`.
 - Dependencies use direct version strings (no version catalog). When adding a dependency, add it directly in `app/build.gradle.kts` under `dependencies {}`.
 - Theme is `Theme.HzAppOn` (extends `MaterialComponents.DayNight.DarkActionBar`). Use Material Design components where possible.
+- Coroutines: `viewModelScope` in ViewModels, `Dispatchers.IO` for all DB/network work
+- Expose `StateFlow` from ViewModels, never `MutableStateFlow`
+- No hardcoded strings in Kotlin — all user-facing text in `strings.xml`
 
 ## Adding New Screens
 
