@@ -42,9 +42,44 @@ On Windows use `gradlew.bat` instead of `./gradlew`.
 
 Single-module app (`:app`). No multi-module or flavour setup yet.
 
+**Screaming architecture** — packages are organized by feature/domain, not by technical layer. The top-level package structure must communicate what the app *does*:
+```
+com.hz.appon/
+├── <feature>/        e.g. quiz/, recipe/, puzzle/
+│   ├── *Activity.kt
+│   ├── *ViewModel.kt
+│   ├── *Repository.kt  (only when there are 2+ data sources)
+│   └── model/
+├── ads/              AdMob wiring
+└── shared/           Only for code genuinely used by 3+ features
+```
+Never create top-level `ui/`, `data/`, or `network/` packages.
+
 **UI layer:** XML layouts with ViewBinding enabled. `ActivityMainBinding` is inflated in `MainActivity` — all view references go through `binding`, never `findViewById`.
 
 **Entry point:** `MainActivity` is the sole launcher activity. New screens should be added as additional `Activity` classes declared in `AndroidManifest.xml`, or as `Fragment`s hosted by `MainActivity`.
+
+## Testing Strategy
+
+Every piece of logic that can be tested, must be tested. Test types in order of preference:
+
+- **Unit tests** (`src/test/`) — pure logic, no Android framework. Use JUnit 4 + MockK.
+- **Integration tests** (`src/test/` with Robolectric) — components working together without a device.
+- **UI/Instrumentation tests** (`src/androidTest/`) — Espresso, only for critical user flows.
+
+Test file mirrors source file: `quiz/QuizViewModel.kt` → `quiz/QuizViewModelTest.kt`.
+
+Run a single test class: `./gradlew test --tests "com.hz.appon.quiz.QuizViewModelTest"`
+
+## Over-Engineering Guardrails
+
+Claude will explicitly flag with **[CAUTION: over-engineering]** before introducing any of the following unless the codebase already justifies it:
+- Repository pattern with fewer than 2 real data sources
+- Dependency injection (Hilt) with fewer than 3 injectable dependencies
+- Sealed class/interface hierarchies for 2-state conditions
+- Coroutine `Flow` where a single `suspend fun` suffices
+- Abstract base classes or interfaces with only one implementation
+- Multi-module splitting before the single module exceeds ~15 files per feature
 
 ## Key Conventions
 
