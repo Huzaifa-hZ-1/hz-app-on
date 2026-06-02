@@ -58,6 +58,10 @@ Single-module app (`:app`). No multi-module or flavour setup yet.
 2. Add a corresponding layout XML in `app/src/main/res/layout/`
 3. Register the activity in `AndroidManifest.xml`
 
+## Session Handoff
+
+`doc/session-handoff.md` (gitignored) tracks everything done so far and what's next. At the start of a new session, read it to resume context. Update it at the end of every session with new decisions, completed items, and changed pending actions.
+
 ## Windows Environment Notes
 
 - Always prefix Gradle commands with `JAVA_HOME="/c/Program Files/Android/Android Studio/jbr"`
