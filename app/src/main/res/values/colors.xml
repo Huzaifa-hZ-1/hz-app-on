@@ -27,11 +27,11 @@
     <color name="timer_warning">#F59E0B</color>
     <color name="timer_critical">#EF4444</color>
 
-    <!-- Kahoot-style answer button colors -->
-    <color name="answer_a">#E21B3C</color>
+    <!-- Answer button colors (must not use correct_green or wrong_red) -->
+    <color name="answer_a">#E67E22</color>
     <color name="answer_b">#1368CE</color>
     <color name="answer_c">#D89E00</color>
-    <color name="answer_d">#26890C</color>
+    <color name="answer_d">#8B5CF6</color>
 
     <!-- Category card cycling palette -->
     <color name="cat_color_1">#8B5CF6</color>
