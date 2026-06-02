@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingHorizontal="16dp">
 
-    <!-- Header: hearts | category | counter -->
+    <!-- Header: hearts | category + counter -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="48dp"
+        android:paddingBottom="16dp"
+        android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/textHearts"
@@ -17,71 +22,120 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/heart_red"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textCategory"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp" />
+            android:orientation="vertical"
+            android:gravity="end">
 
-        <TextView
-            android:id="@+id/textCounter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/textCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:gravity="end" />
+
+            <TextView
+                android:id="@+id/textCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="end" />
+
+        </LinearLayout>
     </LinearLayout>
 
-    <!-- Timer progress bar -->
+    <!-- Timer bar -->
     <ProgressBar
         android:id="@+id/progressTimer"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="20dp"
         android:max="15"
         android:progress="15"
-        android:progressTint="@color/timer_progress" />
+        android:progressTint="@color/timer_progress"
+        android:progressBackgroundTint="@color/surface_elevated" />
 
-    <!-- Question text -->
-    <TextView
-        android:id="@+id/textQuestion"
+    <!-- Question card -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center"
-        android:padding="16dp"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_marginBottom="20dp"
+        app:cardBackgroundColor="@color/surface"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp">
 
-    <!-- Answer buttons -->
-    <Button
+        <TextView
+            android:id="@+id/textQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="24dp"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Answer buttons (A/B/C/D colors set via backgroundTint) -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAnswer0"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="54dp"
         android:layout_marginBottom="8dp"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textAllCaps="false"
+        android:gravity="start|center_vertical"
+        android:paddingHorizontal="20dp"
+        app:backgroundTint="@color/answer_a"
+        app:cornerRadius="12dp" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAnswer1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="54dp"
         android:layout_marginBottom="8dp"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textAllCaps="false"
+        android:gravity="start|center_vertical"
+        android:paddingHorizontal="20dp"
+        app:backgroundTint="@color/answer_b"
+        app:cornerRadius="12dp" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAnswer2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="54dp"
         android:layout_marginBottom="8dp"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textAllCaps="false"
+        android:gravity="start|center_vertical"
+        android:paddingHorizontal="20dp"
+        app:backgroundTint="@color/answer_c"
+        app:cornerRadius="12dp" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAnswer3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+        android:layout_height="54dp"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textAllCaps="false"
+        android:gravity="start|center_vertical"
+        android:paddingHorizontal="20dp"
+        app:backgroundTint="@color/answer_d"
+        app:cornerRadius="12dp" />
 
 </LinearLayout>

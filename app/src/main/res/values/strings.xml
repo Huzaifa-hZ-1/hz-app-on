@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Hz App On</string>
+    <string name="splash_tagline">Test your knowledge</string>
 
     <!-- Onboarding -->
     <string name="onboarding_title">What are you into?</string>
@@ -29,6 +30,17 @@
     <string name="session_end_change_categories">Change Categories</string>
     <string name="session_end_go_home">Go Home</string>
     <string name="session_end_great_job">Great job!</string>
+
+    <!-- Difficulty picker -->
+    <string name="difficulty_title">Choose Difficulty</string>
+    <string name="difficulty_easy">Easy</string>
+    <string name="difficulty_easy_desc">10 easy questions</string>
+    <string name="difficulty_medium">Medium</string>
+    <string name="difficulty_medium_desc">10 medium questions</string>
+    <string name="difficulty_hard">Hard</string>
+    <string name="difficulty_hard_desc">10 hard questions</string>
+    <string name="difficulty_progressive">Mixed</string>
+    <string name="difficulty_progressive_desc">4 easy · 3 medium · 3 hard</string>
 
     <!-- Errors -->
     <string name="error_load_questions">Could not load questions. Please try again.</string>

@@ -7,11 +7,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.hz.appon.App
-import com.hz.appon.R
+import com.hz.appon.data.model.Category
 import com.hz.appon.databinding.ActivityHomeBinding
+import com.hz.appon.databinding.BottomSheetDifficultyBinding
 import com.hz.appon.onboarding.OnboardingActivity
 import com.hz.appon.quiz.QuizActivity
+import com.hz.appon.quiz.QuizMode
+import com.hz.appon.quiz.heartsDisplay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -31,8 +35,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private val adapter = CategoryCardAdapter { category ->
-        Timber.d("Starting quiz for category: ${category.name}")
-        startActivity(QuizActivity.newIntent(this, category.id, category.name))
+        showDifficultyPicker(category)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,8 +54,6 @@ class HomeActivity : AppCompatActivity() {
         container.adManager.loadBanner(binding.adBannerContainer)
     }
 
-    // onResume is called every time the Activity becomes visible — including when returning
-    // from Onboarding after re-selecting categories.
     override fun onResume() {
         super.onResume()
         viewModel.loadSelectedCategories()
@@ -69,10 +70,28 @@ class HomeActivity : AppCompatActivity() {
         }
         lifecycleScope.launch {
             viewModel.livesState.collectLatest { lives ->
-                binding.textHearts.text = getString(
-                    R.string.home_hearts_label, lives.current, lives.max
-                )
+                binding.textHearts.text = heartsDisplay(lives.current, lives.max)
             }
         }
+    }
+
+    private fun showDifficultyPicker(category: Category) {
+        val sheet = BottomSheetDialog(this)
+        val sheetBinding = BottomSheetDifficultyBinding.inflate(layoutInflater)
+        sheetBinding.textSheetCategoryName.text = category.name
+
+        fun pick(mode: QuizMode) {
+            sheet.dismiss()
+            Timber.d("Starting quiz: ${category.name}, mode=$mode")
+            startActivity(QuizActivity.newIntent(this, category.id, category.name, mode))
+        }
+
+        sheetBinding.btnEasy.setOnClickListener { pick(QuizMode.EASY) }
+        sheetBinding.btnMedium.setOnClickListener { pick(QuizMode.MEDIUM) }
+        sheetBinding.btnHard.setOnClickListener { pick(QuizMode.HARD) }
+        sheetBinding.btnProgressive.setOnClickListener { pick(QuizMode.PROGRESSIVE) }
+
+        sheet.setContentView(sheetBinding.root)
+        sheet.show()
     }
 }

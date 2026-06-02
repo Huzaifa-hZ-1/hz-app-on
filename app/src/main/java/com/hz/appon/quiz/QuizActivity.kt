@@ -2,6 +2,7 @@ package com.hz.appon.quiz
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +33,11 @@ class QuizActivity : AppCompatActivity() {
         listOf(binding.btnAnswer0, binding.btnAnswer1, binding.btnAnswer2, binding.btnAnswer3)
     }
 
+    private val answerColors = listOf(R.color.answer_a, R.color.answer_b, R.color.answer_c, R.color.answer_d)
+    private val answerLabels = listOf("A", "B", "C", "D")
+
+    private lateinit var quizMode: QuizMode
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityQuizBinding.inflate(layoutInflater)
@@ -39,13 +45,18 @@ class QuizActivity : AppCompatActivity() {
 
         val categoryId = intent.getIntExtra(EXTRA_CATEGORY_ID, -1)
         val categoryName = intent.getStringExtra(EXTRA_CATEGORY_NAME) ?: ""
+        quizMode = QuizMode.valueOf(
+            intent.getStringExtra(EXTRA_QUIZ_MODE) ?: QuizMode.PROGRESSIVE.name
+        )
 
         binding.textCategory.text = categoryName
-        answerButtons.forEach { btn -> btn.setOnClickListener { viewModel.submitAnswer(btn.text.toString()) } }
+        answerButtons.forEach { btn ->
+            btn.setOnClickListener { viewModel.submitAnswer(btn.tag as? String ?: "") }
+        }
 
         observeState()
-        viewModel.startSession(categoryId)
-        Timber.d("QuizActivity started for category: $categoryName ($categoryId)")
+        viewModel.startSession(categoryId, quizMode)
+        Timber.d("QuizActivity started: $categoryName mode=$quizMode")
     }
 
     private fun observeState() {
@@ -69,22 +80,39 @@ class QuizActivity : AppCompatActivity() {
             state.session.currentIndex + 1,
             state.session.totalQuestions
         )
-        binding.textHearts.text = getString(R.string.quiz_hearts, state.lives.current)
+        binding.textHearts.text = heartsDisplay(state.lives.current, state.lives.max)
+
         binding.progressTimer.progress = state.timeRemaining
+        val timerColor = when {
+            state.timeRemaining > 10 -> R.color.timer_progress
+            state.timeRemaining > 5 -> R.color.timer_warning
+            else -> R.color.timer_critical
+        }
+        binding.progressTimer.progressTintList =
+            ColorStateList.valueOf(ContextCompat.getColor(this, timerColor))
 
         answerButtons.forEachIndexed { i, btn ->
-            btn.text = if (i < q.options.size) q.options[i] else ""
-            btn.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
+            val answer = if (i < q.options.size) q.options[i] else ""
+            btn.text = if (i < q.options.size) "${answerLabels[i]}   $answer" else ""
+            btn.tag = answer
+            btn.backgroundTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(this, answerColors[i]))
+            btn.setTextColor(ContextCompat.getColor(this, R.color.white))
         }
 
         state.selectedAnswer?.let { selected ->
             setButtonsEnabled(false)
             answerButtons.forEach { btn ->
+                val answer = btn.tag as? String ?: ""
                 when {
-                    btn.text == q.correctAnswer ->
-                        btn.setBackgroundColor(ContextCompat.getColor(this, R.color.correct_green))
-                    btn.text == selected ->
-                        btn.setBackgroundColor(ContextCompat.getColor(this, R.color.wrong_red))
+                    answer == q.correctAnswer ->
+                        btn.backgroundTintList = ColorStateList.valueOf(
+                            ContextCompat.getColor(this, R.color.correct_green)
+                        )
+                    answer == selected ->
+                        btn.backgroundTintList = ColorStateList.valueOf(
+                            ContextCompat.getColor(this, R.color.wrong_red)
+                        )
                 }
             }
         } ?: setButtonsEnabled(true)
@@ -94,26 +122,38 @@ class QuizActivity : AppCompatActivity() {
         answerButtons.forEach { it.isEnabled = enabled }
 
     private fun navigateToEnd(state: QuizViewModel.UiState.SessionComplete) {
-        val intent = SessionEndActivity.newIntent(
-            context = this,
-            score = state.session.correctCount,
-            total = state.session.totalQuestions,
-            categoryId = state.session.categoryId,
-            categoryName = binding.textCategory.text.toString(),
-            isGameOver = state.isGameOver
+        startActivity(
+            SessionEndActivity.newIntent(
+                context = this,
+                score = state.session.correctCount,
+                total = state.session.totalQuestions,
+                categoryId = state.session.categoryId,
+                categoryName = binding.textCategory.text.toString(),
+                isGameOver = state.isGameOver,
+                mode = quizMode
+            )
         )
-        startActivity(intent)
         finish()
     }
 
     companion object {
         private const val EXTRA_CATEGORY_ID = "extra_category_id"
         private const val EXTRA_CATEGORY_NAME = "extra_category_name"
+        private const val EXTRA_QUIZ_MODE = "extra_quiz_mode"
 
-        /** Creates an Intent to start a quiz for the given category. */
-        fun newIntent(context: Context, categoryId: Int, categoryName: String): Intent =
-            Intent(context, QuizActivity::class.java)
-                .putExtra(EXTRA_CATEGORY_ID, categoryId)
-                .putExtra(EXTRA_CATEGORY_NAME, categoryName)
+        /** Creates an Intent to start a quiz for the given category and difficulty mode. */
+        fun newIntent(
+            context: Context,
+            categoryId: Int,
+            categoryName: String,
+            mode: QuizMode = QuizMode.PROGRESSIVE
+        ): Intent = Intent(context, QuizActivity::class.java)
+            .putExtra(EXTRA_CATEGORY_ID, categoryId)
+            .putExtra(EXTRA_CATEGORY_NAME, categoryName)
+            .putExtra(EXTRA_QUIZ_MODE, mode.name)
     }
 }
+
+/** Returns filled/empty heart chars: "♥♥♥♡♡" */
+internal fun heartsDisplay(current: Int, max: Int) =
+    "♥".repeat(current.coerceAtLeast(0)) + "♡".repeat((max - current).coerceAtLeast(0))

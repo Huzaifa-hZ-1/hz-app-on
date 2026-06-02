@@ -49,8 +49,11 @@ class QuizViewModel(
 
     private var timerJob: Job? = null
 
-    /** Loads questions and starts the session for the given [categoryId]. */
-    fun startSession(categoryId: Int) {
+    /**
+     * Loads questions and starts the session for the given [categoryId] and [mode].
+     * Offline sessions always use the 5 bundled questions regardless of [mode].
+     */
+    fun startSession(categoryId: Int, mode: QuizMode = QuizMode.PROGRESSIVE) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
             engine.onEvent(GameEvent.SessionStarted)
@@ -60,10 +63,16 @@ class QuizViewModel(
                     Timber.d("Offline — loading bundled questions")
                     repository.getBundledQuestions()
                 } else {
-                    Timber.d("Online — loading 10 questions for category $categoryId")
-                    repository.getQuestions(categoryId, Difficulty.EASY, 4) +
-                    repository.getQuestions(categoryId, Difficulty.MEDIUM, 3) +
-                    repository.getQuestions(categoryId, Difficulty.HARD, 3)
+                    Timber.d("Online — mode=$mode, category=$categoryId")
+                    when (mode) {
+                        QuizMode.EASY -> repository.getQuestions(categoryId, Difficulty.EASY, 10)
+                        QuizMode.MEDIUM -> repository.getQuestions(categoryId, Difficulty.MEDIUM, 10)
+                        QuizMode.HARD -> repository.getQuestions(categoryId, Difficulty.HARD, 10)
+                        QuizMode.PROGRESSIVE ->
+                            repository.getQuestions(categoryId, Difficulty.EASY, 4) +
+                            repository.getQuestions(categoryId, Difficulty.MEDIUM, 3) +
+                            repository.getQuestions(categoryId, Difficulty.HARD, 3)
+                    }
                 }
                 val session = QuizSession(categoryId, questions, isOffline = isOffline)
                 presentQuestion(session)

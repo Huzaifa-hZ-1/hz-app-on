@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Legacy Material palette (kept for theme compat) -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -7,9 +8,36 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="correct_green">#FF4CAF50</color>
-    <color name="wrong_red">#FFF44336</color>
-    <color name="heart_red">#FFE53935</color>
-    <color name="offline_banner_bg">#FFFFA000</color>
-    <color name="timer_progress">#FF6200EE</color>
+
+    <!-- Dark game theme -->
+    <color name="background">#0F0E2A</color>
+    <color name="surface">#1A1940</color>
+    <color name="surface_elevated">#252450</color>
+    <color name="primary">#8B5CF6</color>
+    <color name="primary_dark">#6D28D9</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#9D9DC7</color>
+
+    <!-- Semantic game colors -->
+    <color name="correct_green">#10B981</color>
+    <color name="wrong_red">#EF4444</color>
+    <color name="heart_red">#FF4B6E</color>
+    <color name="offline_banner_bg">#D97706</color>
+    <color name="timer_progress">#8B5CF6</color>
+    <color name="timer_warning">#F59E0B</color>
+    <color name="timer_critical">#EF4444</color>
+
+    <!-- Kahoot-style answer button colors -->
+    <color name="answer_a">#E21B3C</color>
+    <color name="answer_b">#1368CE</color>
+    <color name="answer_c">#D89E00</color>
+    <color name="answer_d">#26890C</color>
+
+    <!-- Category card cycling palette -->
+    <color name="cat_color_1">#8B5CF6</color>
+    <color name="cat_color_2">#06B6D4</color>
+    <color name="cat_color_3">#F97316</color>
+    <color name="cat_color_4">#EC4899</color>
+    <color name="cat_color_5">#10B981</color>
+    <color name="cat_color_6">#EAB308</color>
 </resources>

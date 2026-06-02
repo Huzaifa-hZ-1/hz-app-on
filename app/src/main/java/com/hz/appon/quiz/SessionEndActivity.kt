@@ -37,15 +37,18 @@ class SessionEndActivity : AppCompatActivity() {
         val categoryId = intent.getIntExtra(EXTRA_CATEGORY_ID, -1)
         val categoryName = intent.getStringExtra(EXTRA_CATEGORY_NAME) ?: ""
         val isGameOver = intent.getBooleanExtra(EXTRA_GAME_OVER, false)
+        val mode = QuizMode.valueOf(
+            intent.getStringExtra(EXTRA_QUIZ_MODE) ?: QuizMode.PROGRESSIVE.name
+        )
 
         renderResults(score, total, isGameOver)
-        setupButtons(categoryId, categoryName)
+        setupButtons(categoryId, categoryName, mode)
 
         if (viewModel.shouldShowInterstitial) {
             container.adManager.showInterstitial(this)
         }
 
-        Timber.d("SessionEnd: score=$score/$total, gameOver=$isGameOver")
+        Timber.d("SessionEnd: score=$score/$total, gameOver=$isGameOver, mode=$mode")
     }
 
     private fun renderResults(score: Int, total: Int, isGameOver: Boolean) {
@@ -63,15 +66,16 @@ class SessionEndActivity : AppCompatActivity() {
             if (lives.current < lives.max) View.VISIBLE else View.GONE
     }
 
-    private fun setupButtons(categoryId: Int, categoryName: String) {
+    private fun setupButtons(categoryId: Int, categoryName: String, mode: QuizMode) {
         binding.btnWatchAd.setOnClickListener {
             container.adManager.showRewarded(this) {
                 viewModel.onRewardedAdComplete()
                 binding.btnWatchAd.visibility = View.GONE
             }
         }
+        // Play Again preserves the same difficulty mode
         binding.btnPlayAgain.setOnClickListener {
-            startActivity(QuizActivity.newIntent(this, categoryId, categoryName))
+            startActivity(QuizActivity.newIntent(this, categoryId, categoryName, mode))
             finish()
         }
         binding.btnChangeCategories.setOnClickListener {
@@ -92,6 +96,7 @@ class SessionEndActivity : AppCompatActivity() {
         private const val EXTRA_CATEGORY_ID = "extra_category_id"
         private const val EXTRA_CATEGORY_NAME = "extra_category_name"
         private const val EXTRA_GAME_OVER = "extra_game_over"
+        private const val EXTRA_QUIZ_MODE = "extra_quiz_mode"
 
         fun newIntent(
             context: Context,
@@ -99,12 +104,14 @@ class SessionEndActivity : AppCompatActivity() {
             total: Int,
             categoryId: Int,
             categoryName: String,
-            isGameOver: Boolean
+            isGameOver: Boolean,
+            mode: QuizMode = QuizMode.PROGRESSIVE
         ): Intent = Intent(context, SessionEndActivity::class.java)
             .putExtra(EXTRA_SCORE, score)
             .putExtra(EXTRA_TOTAL, total)
             .putExtra(EXTRA_CATEGORY_ID, categoryId)
             .putExtra(EXTRA_CATEGORY_NAME, categoryName)
             .putExtra(EXTRA_GAME_OVER, isGameOver)
+            .putExtra(EXTRA_QUIZ_MODE, mode.name)
     }
 }
