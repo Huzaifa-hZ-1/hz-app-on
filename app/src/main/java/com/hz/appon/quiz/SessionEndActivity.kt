@@ -10,6 +10,7 @@ import com.hz.appon.App
 import com.hz.appon.R
 import com.hz.appon.databinding.ActivitySessionEndBinding
 import com.hz.appon.home.HomeActivity
+import com.hz.appon.onboarding.OnboardingActivity
 import timber.log.Timber
 
 /** Score summary screen shown after every quiz session (win or game-over). */
@@ -71,6 +72,10 @@ class SessionEndActivity : AppCompatActivity() {
         }
         binding.btnPlayAgain.setOnClickListener {
             startActivity(QuizActivity.newIntent(this, categoryId, categoryName))
+            finish()
+        }
+        binding.btnChangeCategories.setOnClickListener {
+            startActivity(OnboardingActivity.newReselect(this))
             finish()
         }
         binding.btnGoHome.setOnClickListener {

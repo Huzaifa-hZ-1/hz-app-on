@@ -53,6 +53,14 @@
         android:text="@string/session_end_play_again" />
 
     <Button
+        android:id="@+id/btnChangeCategories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/session_end_change_categories"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+    <Button
         android:id="@+id/btnGoHome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

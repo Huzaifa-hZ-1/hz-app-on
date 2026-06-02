@@ -12,6 +12,7 @@
     <string name="home_offline_banner">You\'re offline — 5 questions available</string>
     <string name="home_hearts_label">Hearts: %d / %d</string>
     <string name="home_tap_to_play">Tap a category to play</string>
+    <string name="home_edit_categories">Edit Categories</string>
 
     <!-- Quiz -->
     <string name="quiz_question_counter">%d / %d</string>
@@ -25,6 +26,7 @@
     <string name="session_end_game_over">You ran out of hearts</string>
     <string name="session_end_watch_ad">Watch ad to restore 1 heart ♥</string>
     <string name="session_end_play_again">Play Again</string>
+    <string name="session_end_change_categories">Change Categories</string>
     <string name="session_end_go_home">Go Home</string>
     <string name="session_end_great_job">Great job!</string>
 

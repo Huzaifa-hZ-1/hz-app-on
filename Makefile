@@ -7,7 +7,7 @@ ADB          := $(ANDROID_HOME)\platform-tools\adb.exe
 EMULATOR     := $(ANDROID_HOME)\emulator\emulator.exe
 AVD          := Pixel_8_API_35
 APP_ID       := com.hz.appon
-MAIN         := com.hz.appon/.MainActivity
+MAIN         := com.hz.appon/.SplashActivity
 APK          := app\build\outputs\apk\debug\app-debug.apk
 
 .PHONY: help build test clean install run emulator kill logs
