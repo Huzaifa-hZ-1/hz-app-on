@@ -93,6 +93,10 @@ Claude will explicitly flag with **[CAUTION: over-engineering]** before introduc
 2. Add a corresponding layout XML in `app/src/main/res/layout/`
 3. Register the activity in `AndroidManifest.xml`
 
+## Developer Context
+
+The developer is experienced with Kotlin but new to Android. When writing code, add short inline explanations for Android-specific concepts (lifecycle, Manifest, ViewBinding, Intents, ViewModel, etc.). Do NOT explain Kotlin language features — only Android-specific behaviour and the "why" behind it.
+
 ## Session Handoff
 
 `doc/` is gitignored. It contains per-milestone MD files (`milestone-01-*.md`, `milestone-02-*.md`, …) and a `session-handoff.md` index. At the start of a new session, read `doc/session-handoff.md` to resume. At the end of a milestone, create a new `doc/milestone-NN-<topic>.md` and update the index.
