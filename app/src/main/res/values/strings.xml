@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Hz App On</string>
+    <string name="greeting">Hello, World!</string>
+    <string name="tap_me">Tap me</string>
+    <string name="tap_count_zero">Taps: 0</string>
+    <string name="tap_count">Taps: %d</string>
 </resources>
