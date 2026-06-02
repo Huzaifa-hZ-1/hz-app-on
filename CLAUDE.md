@@ -115,6 +115,12 @@ Use **Timber** throughout — never `android.util.Log` directly.
 - **D** — ViewModels depend on `QuestionRepository` interface, not `QuestionRepositoryImpl`
 
 ### General
+- Read existing files before writing. Don't re-read unless changed.
+- Thorough in reasoning, concise in output.
+- Skip files over 100KB unless required.
+- No sycophantic openers or closing fluff.
+- No emojis or em-dashes.
+- Do not guess APIs, versions, flags, commit SHAs, or package names. Verify by reading code or docs before asserting.
 - ViewBinding is enabled — always use `binding.*` to access views, not `findViewById`.
 - Dependencies use direct version strings (no version catalog). When adding a dependency, add it directly in `app/build.gradle.kts` under `dependencies {}`.
 - Theme is `Theme.HzAppOn` (extends `MaterialComponents.DayNight.DarkActionBar`). Use Material Design components where possible.
