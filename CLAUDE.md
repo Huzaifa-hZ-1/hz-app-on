@@ -60,7 +60,7 @@ Single-module app (`:app`). No multi-module or flavour setup yet.
 
 ## Session Handoff
 
-`doc/session-handoff.md` (gitignored) tracks everything done so far and what's next. At the start of a new session, read it to resume context. Update it at the end of every session with new decisions, completed items, and changed pending actions.
+`doc/` is gitignored. It contains per-milestone MD files (`milestone-01-*.md`, `milestone-02-*.md`, …) and a `session-handoff.md` index. At the start of a new session, read `doc/session-handoff.md` to resume. At the end of a milestone, create a new `doc/milestone-NN-<topic>.md` and update the index.
 
 ## Windows Environment Notes
 
