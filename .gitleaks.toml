@@ -1,0 +1,26 @@
+[extend]
+# Extend gitleaks default rules
+useDefault = true
+
+[allowlist]
+description = "Project-level allowlist"
+paths = [
+    # Never scan the keystore binary
+    "app/keystore",
+    # Gradle cache and build output
+    ".gradle",
+    "build",
+]
+
+[[rules]]
+id = "android-admob-test-id"
+description = "Allow Google's public AdMob test App ID"
+regex = '''ca-app-pub-3940256099942544~3347511713'''
+allowlist.regexes = ['''ca-app-pub-3940256099942544~3347511713''']
+
+[[rules]]
+id = "local-properties-secrets"
+description = "Block signing credentials if accidentally staged"
+regex = '''(KEYSTORE_PASSWORD|KEY_PASSWORD)\s*=\s*.+'''
+path = "local.properties"
+severity = "CRITICAL"

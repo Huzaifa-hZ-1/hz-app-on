@@ -57,3 +57,24 @@ Single-module app (`:app`). No multi-module or flavour setup yet.
 1. Create a new `Activity` in `app/src/main/java/com/hz/appon/`
 2. Add a corresponding layout XML in `app/src/main/res/layout/`
 3. Register the activity in `AndroidManifest.xml`
+
+## Windows Environment Notes
+
+- Always prefix Gradle commands with `JAVA_HOME="/c/Program Files/Android/Android Studio/jbr"`
+- `gh` CLI requires `export PATH="$PATH:/c/Program Files/GitHub CLI"` in Bash sessions
+- SSH agent service is disabled on this machine — `git push` via SSH will fail. Workaround:
+  `git remote set-url origin https://github.com/Huzaifa-hZ-1/hz-app-on.git && git push && git remote set-url origin git@github.com:Huzaifa-hZ-1/hz-app-on.git`
+
+## Security Tooling
+
+- Secret scanning: gitleaks runs as a pre-commit hook (`hooks/pre-commit`, config in `.gitleaks.toml`)
+- Hooks are tracked in `hooks/` — git is configured with `core.hooksPath = hooks`
+- CI runs gitleaks, Snyk, and SonarCloud on every push to `main`
+- Snyk CI requires `SNYK_TOKEN` secret — add at github.com/Huzaifa-hZ-1/hz-app-on/settings/secrets
+- SonarCloud CI requires `SONAR_TOKEN` secret — sign up at sonarcloud.io first
+
+## Release & AdMob
+
+- Keystore at `app/keystore/hz-app-on.jks` (gitignored). Credentials in `local.properties` (gitignored).
+- `local.properties` keystore path is relative to the `:app` module dir, not the project root
+- AdMob test App ID is in `AndroidManifest.xml` — replace with real ID from admob.google.com before publishing

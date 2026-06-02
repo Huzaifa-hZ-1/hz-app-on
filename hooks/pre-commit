@@ -1,0 +1,17 @@
+#!/bin/sh
+# Scan staged changes for secrets before committing.
+# Requires gitleaks: https://github.com/gitleaks/gitleaks
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+    echo "[pre-commit] gitleaks not found — skipping secret scan."
+    echo "Install: winget install gitleaks"
+    exit 0
+fi
+
+gitleaks protect --staged --config=.gitleaks.toml --redact -v
+if [ $? -ne 0 ]; then
+    echo ""
+    echo "[pre-commit] Secret detected. Commit blocked."
+    echo "Remove the secret, then commit again."
+    exit 1
+fi
